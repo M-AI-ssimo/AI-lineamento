@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI-Lineamento · Il traduttore in aziendalese</title>
+<meta name="description" content="Scrivi una frase normale: passa per chat, documenti, email, fogli e riunioni, ed esce in aziendalese da keynote. Oppure fai il contrario. Un esperimento satirico per sdrammatizzare la vita d'ufficio.">
+<!-- Dopo la pubblicazione sostituisci https://ai-lineamento.pages.dev con il tuo indirizzo reale -->
+<link rel="canonical" href="https://ai-lineamento.pages.dev/">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="it_IT">
+<meta property="og:title" content="AI-Lineamento · Il traduttore in aziendalese">
+<meta property="og:description" content="Scrivi «faccio fotocopie», ricevi «presidio la riproduzione analogica di asset documentali». E viceversa. Esperimento satirico per sdrammatizzare l'ufficio.">
+<meta property="og:url" content="https://ai-lineamento.pages.dev/">
+<meta property="og:image" content="https://ai-lineamento.pages.dev/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="627">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<a class="skip" href="#composer">Vai al traduttore</a>
+<div class="blobs" aria-hidden="true"><i></i><i></i><i></i></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <a class="brand" href="./" aria-label="AI-Lineamento, home"><span>AI</span>-Lineamento</a>
+    <label class="search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M10 3a7 7 0 1 0 4.2 12.6l4.6 4.6 1.4-1.4-4.6-4.6A7 7 0 0 0 10 3zm0 2a5 5 0 1 1 0 10 5 5 0 0 1 0-10z"/></svg>
+      <span class="sr-only">Cerca nel glossario</span>
+      <input id="top-search" type="search" placeholder="Cerca sinergie nel glossario" autocomplete="off">
+    </label>
+    <nav class="nav" aria-label="Sezioni">
+      <a href="#composer" class="nav-item active"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 2 11h3v9h6v-6h2v6h6v-9h3z"/></svg><span>Traduttore</span></a>
+      <button class="nav-item" data-open="glossary-dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 3h11a3 3 0 0 1 3 3v15H7a2 2 0 0 1-2-2zm2 14v2h10v-2zm0-12v10h10V6a1 1 0 0 0-1-1z"/></svg><span>Glossario</span></button>
+      <button class="nav-item" data-open="bingo-dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h8v8H3zm10 0h8v8h-8zM3 13h8v8H3zm10 0h8v8h-8z"/></svg><span>Bingo</span></button>
+      <button class="nav-item" data-open="info-dialog"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2a10 10 0 1 0 0 20 10 10 0 0 0 0-20zm1 15h-2v-6h2zm0-8h-2V7h2z"/></svg><span>Info</span></button>
+    </nav>
+  </div>
+</header>
+
+<div class="experiment" role="note">
+  <span class="flask" aria-hidden="true">🧪</span>
+  <p><strong>Esperimento satirico.</strong> Serve a sdrammatizzare un po' la vita d'ufficio, non a prendere in giro qualcuno. Nessun legame con aziende o piattaforme reali.</p>
+</div>
+
+<main class="layout">
+  <aside class="col-left">
+    <section class="card profile">
+      <div class="cover"></div>
+      <div class="avatar big" aria-hidden="true">TU</div>
+      <h2>Tu, in una call</h2>
+      <p class="headline">Trasformo frasi semplici in valore percepito | Open to synergies</p>
+      <dl class="stats">
+        <div><dt>Frasi tradotte da te</dt><dd id="stat-count">0</dd></div>
+        <div><dt>Fuffa rimossa da te</dt><dd id="stat-fluff">0</dd></div>
+        <div><dt>Riunioni che potevano essere una mail</dt><dd>∞</dd></div>
+      </dl>
+    </section>
+    <section class="card how">
+      <h3>Come funziona</h3>
+      <ol>
+        <li>Scrivi un messaggio normale, fino a 300 caratteri: diventa un discorso da keynote.</li>
+        <li>Hai ricevuto una mail incomprensibile? Usa <b>Aziendalese → Italiano</b>.</li>
+        <li>Vota la versione migliore: le più votate entrano nel motore.</li>
+        <li>Condividi il prima e il dopo, se ti fa sorridere.</li>
+      </ol>
+    </section>
+  </aside>
+
+  <section class="col-main">
+    <div id="shared-banner" class="card shared-banner" hidden>
+      <p><strong>Ti hanno girato un risultato in aziendalese.</strong> Eccolo. Poi prova con una frase tua.</p>
+    </div>
+
+    <form id="composer" class="card composer" novalidate>
+      <div class="tabs" role="tablist" aria-label="Direzione della traduzione">
+        <button type="button" role="tab" id="tab-up" class="tab" aria-selected="true" data-dir="up">Italiano <span aria-hidden="true">→</span> Aziendalese</button>
+        <button type="button" role="tab" id="tab-down" class="tab" aria-selected="false" data-dir="down">Aziendalese <span aria-hidden="true">→</span> Italiano</button>
+      </div>
+      <div class="composer-head">
+        <div class="avatar" aria-hidden="true">TU</div>
+        <label for="source" id="composer-label" class="composer-label">Cosa vuoi dire, in parole semplici?</label>
+      </div>
+      <textarea id="source" maxlength="300" rows="3" placeholder="Es. Mi occupo di fare fotocopie." aria-describedby="hint" required></textarea>
+      <div class="composer-meta">
+        <p id="hint" class="hint">Fino a 300 caratteri, come un messaggio. Evita nomi e dati riservati.</p>
+        <span id="count" class="count" aria-live="polite">0 / 300</span>
+      </div>
+      <p id="error" class="error" role="alert" hidden></p>
+      <div class="examples" id="examples" aria-label="Esempi"></div>
+      <div class="composer-actions">
+        <button id="submit" class="btn primary" type="submit">Traduci in aziendalese</button>
+      </div>
+      <div id="out" class="out" hidden aria-live="polite">
+        <div class="out-head"><span id="out-label">In aziendalese</span><button type="button" id="out-copy" class="out-copy">Copia</button></div>
+        <p id="out-text" class="out-text"></p>
+      </div>
+    </form>
+
+    <section id="process" class="card process" hidden aria-live="polite">
+      <div class="process-top">
+        <span class="pulse" aria-hidden="true"></span>
+        <span id="process-title">La tua frase è in giro per l'azienda</span>
+        <button id="skip" type="button" class="link">Salta</button>
+      </div>
+      <div id="window" class="window">
+        <div class="window-bar" id="window-bar"><i></i><i></i><i></i><span id="window-title"></span></div>
+        <div id="window-body" class="window-body"></div>
+      </div>
+      <div class="track" id="track">
+        <div class="track-line"><span id="track-fill"></span></div>
+        <div class="token" id="token" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M2 21 23 12 2 3v7l15 2-15 2z"/></svg></div>
+        <ol class="stations" id="stations">
+          <li data-stage="chat" style="--c:#6b5bd2"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v12H8l-4 4z"/></svg></span>Teams</li>
+          <li data-stage="doc" style="--c:#2f6fde"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 2h9l5 5v15H6zm8 1v5h5"/></svg></span>Word</li>
+          <li data-stage="mail" style="--c:#0ea5c6"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 5h18v14H3zm2 2v.5l7 5 7-5V7z"/></svg></span>Email</li>
+          <li data-stage="sheet" style="--c:#1f9d55"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 3h18v18H3zm2 2v4h6V5zm8 0v4h6V5zm-8 6v4h6v-4zm8 0v4h6v-4zm-8 6v2h6v-2zm8 0v2h6v-2z"/></svg></span>Fogli</li>
+          <li data-stage="meet" style="--c:#f97316"><span><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 11a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm8 0a3 3 0 1 0 0-6 3 3 0 0 0 0 6zM2 19c0-3 3-5 6-5s6 2 6 5zm12 0c0-1.6-.6-3-1.7-4 .9-.6 2.1-1 3.7-1 3 0 6 2 6 5z"/></svg></span>Riunione</li>
+        </ol>
+      </div>
+    </section>
+
+    <article id="post" class="card post" hidden>
+      <header class="post-head">
+        <div class="avatar ring" aria-hidden="true">TU</div>
+        <div>
+          <p class="post-author">Tu <span class="degree">· 1°</span></p>
+          <p id="post-title" class="post-title"></p>
+          <p class="post-time">Adesso · visibile a tutti gli stakeholder</p>
+        </div>
+        <span id="post-badge" class="badge">Keynote mode</span>
+      </header>
+      <p class="before"><span>Prima</span> «<span id="before-text"></span>»</p>
+      <div class="stage" id="stage">
+        <div class="spot" aria-hidden="true"></div>
+        <p id="after-text" class="after"></p>
+        <div id="confetti" class="confetti" aria-hidden="true"></div>
+      </div>
+      <p id="community-badge" class="community-badge" hidden></p>
+      <div class="meter" aria-label="Indice di aziendalese">
+        <span class="meter-label">Indice di aziendalese</span>
+        <span class="meter-track"><span id="meter-fill"></span></span>
+        <b id="meter-value">0%</b>
+      </div>
+      <p class="reactions"><span aria-hidden="true">👏💡🤝🚀</span> <span id="reactions-count"></span></p>
+      <div class="post-actions">
+        <button type="button" id="again" class="act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17.7 6.3A8 8 0 1 0 20 12h-2a6 6 0 1 1-1.8-4.2L13 11h7V4z"/></svg>Altra versione</button>
+        <button type="button" id="roundtrip" class="act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 7h11l-3-3 1.4-1.4L22 8l-5.6 5.4L15 12l3-3H7zm10 10H6l3 3-1.4 1.4L2 16l5.6-5.4L9 12l-3 3h11z"/></svg>Al contrario</button>
+        <button type="button" id="copy" class="act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h11v14H8zm2 2v10h7V5zM5 7v14h11v-2H7V7z"/></svg>Copia</button>
+        <button type="button" id="share" class="act primary-act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>Condividi</button>
+      </div>
+      <section id="vote" class="vote" hidden>
+        <h3>Quale versione merita il palco?</h3>
+        <p class="muted small">Vota la più aziendalese. Con almeno 2 voti entra nel motore e la vedranno tutti.</p>
+        <div id="vote-options" class="vote-options"></div>
+        <p id="vote-status" class="vote-status" role="status"></p>
+      </section>
+    </article>
+
+    <article id="human" class="card human" hidden>
+      <header class="human-head">
+        <span class="human-icon" aria-hidden="true">🧹</span>
+        <div><h3>Traduzione onesta</h3><p class="muted small">Quello che volevano dire davvero</p></div>
+        <span id="fluff" class="fluff"></span>
+      </header>
+      <p class="before"><span>Ricevuto</span> «<span id="human-before"></span>»</p>
+      <p id="human-text" class="human-text"></p>
+      <ul id="decoded" class="decoded" aria-label="Parole tradotte"></ul>
+      <div class="post-actions">
+        <button type="button" id="human-copy" class="act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 3h11v14H8zm2 2v10h7V5zM5 7v14h11v-2H7V7z"/></svg>Copia</button>
+        <button type="button" id="human-share" class="act primary-act"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 16a3 3 0 0 0-2.4 1.2l-6.7-3.4a3 3 0 0 0 0-1.6l6.7-3.4A3 3 0 1 0 15 7l-6.7 3.4a3 3 0 1 0 0 3.2L15 17a3 3 0 1 0 3-1z"/></svg>Condividi il traduttore</button>
+      </div>
+    </article>
+  </section>
+
+  <aside class="col-right">
+    <section class="card word accent-violet">
+      <h3>Parola del giorno</h3>
+      <p id="wotd-term" class="wotd-term"></p>
+      <p id="wotd-cat" class="wotd-cat"></p>
+      <p id="wotd-plain" class="wotd-plain"></p>
+      <p id="wotd-example" class="wotd-example"></p>
+      <button type="button" class="btn ghost small" data-open="glossary-dialog">Apri il glossario</button>
+    </section>
+    <section class="card tip accent-orange">
+      <h3>Consiglio del giorno</h3>
+      <p id="tip-kind" class="tip-kind"></p>
+      <p id="tip-text" class="tip-text"></p>
+      <p id="tip-src" class="tip-src"></p>
+      <button type="button" id="tip-next" class="btn ghost small">Un altro</button>
+    </section>
+    <section class="card trending accent-blue">
+      <h3>In tendenza in riunione</h3>
+      <ul id="trending"></ul>
+      <button type="button" class="btn ghost small" data-open="bingo-dialog">Gioca al bingo della call</button>
+    </section>
+    <section class="card community accent-green" id="community" hidden>
+      <h3>Le più votate 🏆</h3>
+      <ol id="community-list"></ol>
+    </section>
+  </aside>
+</main>
+
+<footer class="footer">
+  <p><b>AI-Lineamento</b> è un esperimento satirico per sdrammatizzare un po' le situazioni d'ufficio. Le frasi sono generate da un dizionario e da regole scritte a mano: nonostante il nome, nessuna intelligenza artificiale. Il testo da tradurre resta nel tuo browser; viene salvata solo la frase che voti.</p>
+  <p>Non è affiliato a LinkedIn, Microsoft o ad altre aziende citate. I nomi delle app servono solo a raccontare la giornata tipo.</p>
+</footer>
+
+<!-- Dialog: condivisione -->
+<dialog id="share-dialog" class="dialog">
+  <form method="dialog" class="dialog-head"><h2>Condividi</h2><button class="close" aria-label="Chiudi">×</button></form>
+  <fieldset class="share-what">
+    <legend>Cosa vuoi condividere?</legend>
+    <label><input type="radio" name="what" value="result" checked> Il mio risultato (prima e dopo)</label>
+    <label><input type="radio" name="what" value="app"> Solo il traduttore</label>
+  </fieldset>
+  <p id="share-note" class="share-note"></p>
+  <div class="share-grid">
+    <button type="button" data-net="linkedin" class="net"><span class="net-dot li" aria-hidden="true"></span>LinkedIn</button>
+    <button type="button" data-net="facebook" class="net"><span class="net-dot fb" aria-hidden="true"></span>Facebook</button>
+    <button type="button" data-net="instagram" class="net"><span class="net-dot ig" aria-hidden="true"></span>Instagram</button>
+    <button type="button" data-net="teams" class="net"><span class="net-dot tm" aria-hidden="true"></span>Teams</button>
+    <button type="button" data-net="whatsapp" class="net"><span class="net-dot wa" aria-hidden="true"></span>WhatsApp</button>
+    <button type="button" data-net="native" class="net" id="native-share" hidden><span class="net-dot nv" aria-hidden="true"></span>Altre app</button>
+  </div>
+  <div class="share-tools">
+    <button type="button" id="copy-post" class="btn">Copia testo del post</button>
+    <button type="button" id="copy-link" class="btn">Copia link</button>
+    <button type="button" id="download-img" class="btn">Scarica immagine</button>
+  </div>
+  <p id="share-feedback" class="share-feedback" role="status"></p>
+  <details class="preview">
+    <summary>Anteprima del testo del post</summary>
+    <textarea id="post-preview" rows="8" readonly></textarea>
+  </details>
+</dialog>
+
+<!-- Dialog: glossario -->
+<dialog id="glossary-dialog" class="dialog wide">
+  <form method="dialog" class="dialog-head"><h2>Glossario dell'aziendalese</h2><button class="close" aria-label="Chiudi">×</button></form>
+  <div class="glossary-tools">
+    <input id="glossary-search" type="search" placeholder="Cerca un termine, es. allinearsi" aria-label="Cerca nel glossario">
+    <select id="glossary-cat" aria-label="Categoria"></select>
+  </div>
+  <p id="glossary-count" class="muted"></p>
+  <ul id="glossary-list" class="glossary-list"></ul>
+</dialog>
+
+<!-- Dialog: bingo -->
+<dialog id="bingo-dialog" class="dialog">
+  <form method="dialog" class="dialog-head"><h2>Bingo della call</h2><button class="close" aria-label="Chiudi">×</button></form>
+  <p class="muted">Durante la prossima call, tocca una casella ogni volta che qualcuno pronuncia la parola. Cinque in fila: bingo. In silenzio, mi raccomando.</p>
+  <div id="bingo-grid" class="bingo-grid"></div>
+  <p id="bingo-status" class="bingo-status" role="status"></p>
+  <div class="share-tools"><button type="button" id="bingo-new" class="btn">Nuova scheda</button></div>
+</dialog>
+
+<!-- Dialog: info -->
+<dialog id="info-dialog" class="dialog">
+  <form method="dialog" class="dialog-head"><h2>Cos'è AI-Lineamento</h2><button class="close" aria-label="Chiudi">×</button></form>
+  <p>Il nome unisce le due parole più pronunciate in riunione: AI e allineamento. Nonostante il nome, dentro non c'è nessuna intelligenza artificiale, solo regole scritte a mano.</p>
+  <p>Un esperimento nato per ridere insieme di come parliamo in ufficio. Tutti, prima o poi, abbiamo «schedulato una call per allinearci». Riderci sopra aiuta a sdrammatizzare le giornate pesanti.</p>
+  <p><b>Le regole del keynote.</b> Il motore trasforma i verbi in anglicismi («controllare» diventa «checkare»), allunga i concetti («per» diventa «nell'ottica di»), spersonalizza (le persone diventano risorse, i problemi challenge) e aggiunge sigle che fanno urgenza: ASAP, FYI, EOD.</p>
+  <p><b>Al contrario.</b> Incolla una mail in aziendalese: il traduttore inverso toglie le cornici, scioglie sigle e anglicismi e ti dice quanta fuffa ha rimosso.</p>
+  <p><b>Voti.</b> Puoi votare la versione migliore di una frase. Si vota una volta per frase. Le versioni con almeno 2 voti diventano la traduzione ufficiale. Viene salvata solo la frase votata, senza dati personali.</p>
+  <p><b>Privacy.</b> Se condividi il link del risultato, chi lo apre vede la frase originale e la traduzione: non inserire nomi, clienti o informazioni riservate.</p>
+  <p><b>Glossario.</b> 150 termini raccolti in 10 categorie, con il significato in italiano chiaro e un esempio d'uso.</p>
+</dialog>
+
+<div id="toast" class="toast" role="status" aria-live="polite"></div>
+
+<script src="vocab.js"></script>
+<script src="tips.js"></script>
+<script src="engine.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
