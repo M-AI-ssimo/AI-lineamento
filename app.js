@@ -1,7 +1,7 @@
 (() => {
   'use strict';
   // Indirizzo pubblico del sito: usato quando la pagina gira in un'anteprima senza URL proprio.
-  const SITE_URL = 'https://ai-lineamento.pages.dev/';
+  const SITE_URL = 'https://ai-lineamento.com/';
   const LIMITS = { up: 300, down: 400 };
   const MIN_VOTES = 2;
 

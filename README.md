@@ -20,7 +20,7 @@ Il caricamento drag and drop di Cloudflare non attiva il backend: serve il colle
 4. **Collegamento.** Nel progetto Pages: Settings → Bindings → Add → D1 database. Nome variabile: `DB` (esattamente così). Database: `ai-lineamento-voti`. Poi rifai il deploy (Deployments → Retry deployment).
 5. **Moderazione (consigliato).** In Settings → Variables and Secrets aggiungi il segreto `ADMIN_KEY` con una password tua. Per nascondere una frase:
    `curl -X POST https://TUO-SITO/api/hide -H "x-admin-key: PASSWORD" -H "content-type: application/json" -d '{"p":"frase da nascondere"}'`
-6. **Indirizzo.** Se il sito non si chiama `ai-lineamento.pages.dev`, sostituisci l'indirizzo in index.html (canonical, og:url, og:image) e in app.js (SITE_URL). Ogni modifica su GitHub ripubblica il sito da sola.
+6. **Indirizzo.** Il sito è su `ai-lineamento.com` (dominio collegato in Custom domains). Se cambi dominio, sostituisci l'indirizzo in index.html (canonical, og:url, og:image) e in app.js (SITE_URL). Ogni modifica su GitHub ripubblica il sito da sola.
 
 Senza il database il sito funziona lo stesso: la sezione voti resta nascosta.
 
